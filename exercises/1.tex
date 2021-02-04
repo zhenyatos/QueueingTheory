@@ -1,0 +1,69 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[english,russian]{babel}
+\usepackage{hyperref}
+\hypersetup{
+	colorlinks   = true, 
+	urlcolor     = blue, 
+	linkcolor    = blue, 
+	citecolor   = red
+}
+\usepackage{amsthm,amssymb,amsfonts,amsmath}
+\usepackage{physics}
+\usepackage{xcolor}
+\usepackage[left=3cm,right=3cm,
+top=3cm,bottom=3cm,bindingoffset=0cm]{geometry}
+\usepackage{tcolorbox}
+
+\newtcolorbox{exercise}[1][]
+{
+	colframe = black!20,
+	colback  = white,
+	coltitle = black,  
+	title    = {#1},
+}
+
+
+\author{Самутичев Е.Р.}
+\date{\today}
+\title{}
+
+
+\begin{document}
+	
+\maketitle
+
+\begin{exercise}[Задача 1]
+	Имеется цепь Маркова с матрицей перехода:
+	$$\mathcal{P} = \begin{pmatrix}
+			0 & \frac{1}{2} & \frac{1}{2} \\[4pt]
+			\frac{1}{3} & \frac{1}{3} & \frac{1}{3} \\[4pt]
+			\frac{1}{4} & \frac{2}{4} & \frac{1}{4}
+		\end{pmatrix}$$
+	Найти вероятность $p_{3,2}^{(3)}$.
+\end{exercise}
+\begin{proof}[Решение]
+	Известно что матрица перехода за $n$ шагов есть $n$-ая степень матрицы перехода за один шаг, воспользовавшись этим получаем:
+	$$p_{3, 2}^{(3)} = (\mathcal{P}^3)_{3, 2}$$
+	Для удобства приведем строки к общему знаменателю и вынесем за скобку:
+	$$\mathcal{P} = \frac{1}{12} \begin{pmatrix}
+		0 & 6 & 6 \\
+		4 & 4 & 4 \\
+		3 & 6 & 3
+	\end{pmatrix}$$
+	Тогда:
+	$$\mathcal{P}^2 = \frac{1}{12^2} \begin{pmatrix}
+		42 & 60 & 42 \\
+		28 & 64 & 52 \\
+		33 & 60 & 51
+	\end{pmatrix}$$
+	$$\mathcal{P}^3 = \frac{1}{12^3} \begin{pmatrix}
+		366 & 744 & 618 \\
+		412 & 736 & 580 \\
+		393 & 744 & 591
+	\end{pmatrix}$$
+	Итого $p_{3, 2}^{(3)} = \frac{744}{1728} = \frac{93}{216} = \frac{31}{72}$.
+\end{proof}
+
+
+\end{document}
