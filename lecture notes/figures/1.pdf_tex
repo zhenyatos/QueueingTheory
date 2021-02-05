@@ -1,0 +1,86 @@
+%% Creator: Inkscape 1.0 (4035a4fb49, 2020-05-01), www.inkscape.org
+%% PDF/EPS/PS + LaTeX output extension by Johan Engelen, 2010
+%% Accompanies image file '1.pdf' (pdf, eps, ps)
+%%
+%% To include the image in your LaTeX document, write
+%%   \input{<filename>.pdf_tex}
+%%  instead of
+%%   \includegraphics{<filename>.pdf}
+%% To scale the image, write
+%%   \def\svgwidth{<desired width>}
+%%   \input{<filename>.pdf_tex}
+%%  instead of
+%%   \includegraphics[width=<desired width>]{<filename>.pdf}
+%%
+%% Images with a different path to the parent latex file can
+%% be accessed with the `import' package (which may need to be
+%% installed) using
+%%   \usepackage{import}
+%% in the preamble, and then including the image with
+%%   \import{<path to file>}{<filename>.pdf_tex}
+%% Alternatively, one can specify
+%%   \graphicspath{{<path to file>/}}
+%% 
+%% For more information, please see info/svg-inkscape on CTAN:
+%%   http://tug.ctan.org/tex-archive/info/svg-inkscape
+%%
+\begingroup%
+  \makeatletter%
+  \providecommand\color[2][]{%
+    \errmessage{(Inkscape) Color is used for the text in Inkscape, but the package 'color.sty' is not loaded}%
+    \renewcommand\color[2][]{}%
+  }%
+  \providecommand\transparent[1]{%
+    \errmessage{(Inkscape) Transparency is used (non-zero) for the text in Inkscape, but the package 'transparent.sty' is not loaded}%
+    \renewcommand\transparent[1]{}%
+  }%
+  \providecommand\rotatebox[2]{#2}%
+  \newcommand*\fsize{\dimexpr\f@size pt\relax}%
+  \newcommand*\lineheight[1]{\fontsize{\fsize}{#1\fsize}\selectfont}%
+  \ifx\svgwidth\undefined%
+    \setlength{\unitlength}{535.62770093bp}%
+    \ifx\svgscale\undefined%
+      \relax%
+    \else%
+      \setlength{\unitlength}{\unitlength * \real{\svgscale}}%
+    \fi%
+  \else%
+    \setlength{\unitlength}{\svgwidth}%
+  \fi%
+  \global\let\svgwidth\undefined%
+  \global\let\svgscale\undefined%
+  \makeatother%
+  \begin{picture}(1,0.60202493)%
+    \lineheight{1}%
+    \setlength\tabcolsep{0pt}%
+    \put(0,0){\includegraphics[width=\unitlength,page=1]{1.pdf}}%
+    \put(0.04344501,0.51583851){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Входящий\end{tabular}}}}%
+    \put(0.07527808,0.48265025){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}поток\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=2]{1.pdf}}%
+    \put(0.0414179,0.42190287){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Источник 1\end{tabular}}}}%
+    \put(0.0415682,0.31293206){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Источник $\ell$\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=3]{1.pdf}}%
+    \put(0.36730809,0.56214101){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}1. Накопитель \end{tabular}}}}%
+    \put(0.60730762,0.56203466){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}2. Рабочая\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=4]{1.pdf}}%
+    \put(0.84731939,0.37908061){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Выходящий\end{tabular}}}}%
+    \put(0.88190317,0.35254502){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}поток\end{tabular}}}}%
+    \put(0.39921456,0.53593098){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}очереди\end{tabular}}}}%
+    \put(0.6371027,0.53488947){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}часть\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=5]{1.pdf}}%
+    \put(0.42880259,0.32258933){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}места\end{tabular}}}}%
+    \put(0.4106974,0.3649763){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}1\end{tabular}}}}%
+    \put(0.51269342,0.36577664){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$k_0$\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=6]{1.pdf}}%
+    \put(0.61282628,0.28330163){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}каналы\end{tabular}}}}%
+    \put(0.5908092,0.25560216){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}обслуживания\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=7]{1.pdf}}%
+    \put(0.68436639,0.41100509){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}1\end{tabular}}}}%
+    \put(0.6761558,0.33074121){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$m$\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=8]{1.pdf}}%
+    \put(0.40956775,0.29552869){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}ожидания\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=9]{1.pdf}}%
+    \put(0.29265386,0.02314931){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Поток потерь\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=10]{1.pdf}}%
+  \end{picture}%
+\endgroup%

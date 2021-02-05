@@ -1,0 +1,68 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[english,russian]{babel}
+\usepackage{hyperref}
+\hypersetup{
+	colorlinks   = true, 
+	urlcolor     = blue, 
+	linkcolor    = blue, 
+	citecolor   = red
+}
+\usepackage{amsthm,amssymb,amsfonts,amsmath}
+\usepackage{physics}
+\usepackage{xcolor}
+\usepackage{tikz-cd}
+\usepackage{import}
+\usepackage{xifthen}
+\usepackage{pdfpages}
+\usepackage{pgfplots}
+
+\usepackage{listings}
+\lstset{basicstyle=\footnotesize\ttfamily,breaklines=true}
+
+\usepackage{transparent}
+\usepackage[left=3cm,right=3cm,
+top=3cm,bottom=3cm,bindingoffset=0cm]{geometry}
+\usetikzlibrary{babel}
+
+\setcounter{secnumdepth}{0}
+\newcounter{sec}[section]
+\newcommand{\mysection}[1]{\section{#1}\stepcounter{sec}}
+
+\newtheoremstyle{mystyle} % name
+{\topsep}                    % Space above
+{\topsep}                    % Space below
+{\rmfamily}                   % Body font
+{}                           % Indent amount
+{\bfseries}                   % Theorem head font
+{.}                          % Punctuation after theorem head
+{.5em}                       % Space after theorem head
+{}  % Theorem head spec (can be left empty, meaning ‘normal’)
+
+
+
+\theoremstyle{mystyle}
+\newtheorem{definition}{Определение}[sec]
+
+\newcommand{\Real}{\mathbb{R}}
+\newcommand{\Natural}{\mathbb{N}}
+\newcommand{\incfig}[1]{%
+	\def\svgwidth{\columnwidth}
+	\import{./figures/}{#1.pdf_tex}
+}
+
+\title{Теория Массового Обслуживания}
+\author{Самутичев Е.Р.}
+\date{4 февраля 2021 г. -- \today}
+
+
+\begin{document}
+	
+\maketitle
+
+\tableofcontents
+\newpage
+
+\input{chapters/01.tex}
+
+\end{document}
