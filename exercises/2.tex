@@ -1,0 +1,111 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[english,russian]{babel}
+\usepackage{hyperref}
+\hypersetup{
+	colorlinks   = true, 
+	urlcolor     = blue, 
+	linkcolor    = blue, 
+	citecolor   = red
+}
+\usepackage{amsthm,amssymb,amsfonts,amsmath}
+\usepackage{physics}
+\usepackage{xcolor}
+\usepackage[left=3cm,right=3cm,
+top=3cm,bottom=3cm,bindingoffset=0cm]{geometry}
+\usepackage{tcolorbox}
+\usepackage{import}
+\usepackage{xifthen}
+
+\newtcolorbox{exercise}[1][]
+{
+	colframe = black!20,
+	colback  = white,
+	coltitle = black,  
+	title    = {#1},
+}
+
+\newcommand{\incfig}[1]{%
+	\def\svgwidth{\columnwidth}
+	\import{./figures/}{#1.pdf_tex}
+}
+
+\author{Самутичев Е.Р.}
+\date{\today}
+\title{}
+
+
+\begin{document}
+	
+\maketitle
+
+\begin{exercise}[Задача 2]
+	Получить финальные вероятности для однородной цепи Маркова, имеющей переходную матрицу
+	$$\mathcal{P} = \begin{pmatrix}
+	\alpha & 1 - \alpha & 0 \\
+	\frac{1 - \beta}{2} & \beta & \frac{1 - \beta}{2} \\
+	0 & 1 - \gamma & \gamma
+	\end{pmatrix}$$
+	где $\alpha, \beta, \gamma \in (0, 1)$
+\end{exercise}
+\begin{proof}[Решение]
+	Изобразим размеченный граф состояний:
+	\begin{figure}[h!]
+		\scalebox{0.8}{\incfig{1}}
+		\centering
+	\end{figure}
+
+	Видим что ЦМ \underline{неприводимая} т.к. все её состояния сообщаются и \underline{непериодическая} т.к. из любого состояния $i \in \{1, 2, 3\}$ переход в себя возможен за один шаг. Кроме того она \underline{конечная} и \underline{однородная} по условию, так что выполнены условия эргодичности ЦМ по теореме Маркова.
+	
+	Поскольку ЦМ эргодическая, то финальные вероятности существуют и могут быть получены из системы:
+	\begin{equation*}
+		\begin{cases} 
+		(\alpha - 1) p_{1\infty} + \frac{1-\beta}{2}  p_{2 \infty} = 0 \\ 
+		(1 - \alpha) p_{1\infty} + (\beta - 1) p_{2\infty} + (1 - \gamma) p_{3 \infty} = 0 \\ 
+		\frac{1-\beta}{2} p_{2\infty} + (\gamma - 1) p_{3 \infty} = 0
+		\end{cases}
+	\end{equation*}
+	Видим что сумма строк матрицы системы равна 0 т.е. уравнения линейно зависимы, заменим 2-е уравнение на условие нормировки, получив систему:
+	\begin{equation*}
+		\begin{cases} 
+		(\alpha - 1) p_{1\infty} + \frac{1-\beta}{2}  p_{2 \infty} = 0 \\ 
+		p_{1\infty} + p_{2\infty} + p_{3\infty} = 1 \\
+		\frac{1-\beta}{2} p_{2\infty} + (\gamma - 1) p_{3 \infty} = 0
+		\end{cases}
+	\end{equation*}
+	Решим её методом Крамера:
+	\begin{multline*}
+		\Delta = \begin{vmatrix}
+			(\alpha - 1) & \frac{1-\beta}{2} & 0 \\
+			1 & 1 & 1 \\
+			0 & \frac{1-\beta}{2} & (\gamma - 1)
+		\end{vmatrix} = (\gamma - 1)\left(\alpha - 1 - \frac{1}{2} + \frac{\beta}{2}\right) - (\alpha - 1)\frac{1-\beta}{2} = \\ = (\gamma - 1)(\alpha - 1) + (1 - \gamma - \alpha + 1)\frac{1-\beta}{2} = (1 - \gamma)(1 - \alpha) + (2 - \alpha - \gamma)\frac{1-\beta}{2}
+	\end{multline*}
+	\begin{align*}
+		\Delta_1 &= \begin{vmatrix}
+			0 & \frac{1-\beta}{2} & 0 \\
+			1 & 1 & 1 \\
+			0 & \frac{1-\beta}{2} & (\gamma - 1)
+		\end{vmatrix} = (1 - \gamma)\frac{1-\beta}{2} \\
+		\Delta_2 &= \begin{vmatrix}
+		(\alpha - 1) & 0 & 0 \\
+		1 & 1 & 1 \\ 
+		0 & 0 & (\gamma - 1)
+		\end{vmatrix} = (\gamma - 1)(\alpha - 1) \\
+		\Delta_3 &=  \begin{vmatrix}
+		(\alpha - 1) & \frac{1-\beta}{2} & 0 \\
+		1 & 1 & 1 \\
+		0 & \frac{1-\beta}{2} & 0
+		\end{vmatrix} = (\alpha - 1)\frac{\beta-1}{2} 
+	\end{align*}
+	Итого:
+	\begin{align*}
+		p_{1\infty} &= \frac{\Delta_1}{\Delta} = \frac{(1-\gamma)(1-\beta)}{2(1-\alpha)(1-\gamma) + (2 - \alpha - \gamma)(1-\beta)} \\
+		p_{2\infty} &= \frac{\Delta_2}{\Delta} = \frac{2(\gamma-1)(\alpha-1)}{2(1-\alpha)(1-\gamma) + (2 - \alpha - \gamma)(1-\beta)} \\
+		p_{3\infty} &= \frac{\Delta_3}{\Delta} = \frac{(\alpha-1)(\beta-1)}{2(1-\alpha)(1-\gamma) + (2 - \alpha - \gamma)(1-\beta)}
+	\end{align*}
+
+\end{proof}
+
+
+\end{document}
