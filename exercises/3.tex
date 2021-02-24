@@ -1,0 +1,100 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[english,russian]{babel}
+\usepackage{hyperref}
+\hypersetup{
+	colorlinks   = true, 
+	urlcolor     = blue, 
+	linkcolor    = blue, 
+	citecolor   = red
+}
+\usepackage{amsthm,amssymb,amsfonts,amsmath}
+\usepackage{physics}
+\usepackage{xcolor}
+\usepackage[left=3cm,right=3cm,
+top=3cm,bottom=3cm,bindingoffset=0cm]{geometry}
+\usepackage{tcolorbox}
+\usepackage{import}
+\usepackage{xifthen}
+
+\newtcolorbox{exercise}[1][]
+{
+	colframe = black!20,
+	colback  = white,
+	coltitle = black,  
+	title    = {#1},
+}
+
+\newcommand{\incfig}[1]{%
+	\def\svgwidth{\columnwidth}
+	\import{./figures/}{#1.pdf_tex}
+}
+\newcommand{\pP}{\mathbf{P}}
+
+\author{Самутичев Е.Р.}
+\date{\today}
+\title{}
+
+
+
+\begin{document}
+	
+\maketitle
+
+\begin{exercise}[Задача 3]
+	Рассмотрим простейший поток событий с интенсивностью $\lambda$. Пусть $N(t)$ обозначает число событий, произошедших к моменту $t$, а отношение 
+	$$\tilde{\lambda}(t) = \frac{N(t)}{t}$$
+	-- среднюю интенсивность потока по результатам наблюдения за ним в интервале $[0, t]$. Доказать, что $\tilde{\lambda} \underset{t\to\infty}{\to} \lambda$ в смысле среднего квадратического, т.е.
+	$$\lim_{t\to\infty}{\textbf{M}[(\tilde{\lambda} - \lambda)^2]} = 0$$
+\end{exercise}
+\begin{proof}[Решение]
+	Поскольку простейший поток является пуассоновским, то
+	$$p_k (0, t) = e^{-\lambda t} \frac{(\lambda t)^k}{k!}$$ 
+	Значит случайная величина $N(t)$ распределена по Пуассону с параметром $\lambda t$. Математическое ожидание и дисперсия такой случайной величины нам известны, получаем
+	$$\bar{n}(t) = \textbf{M}[N(t)] = \lambda t$$
+	и
+	$$\textbf{M}[(N(t) - \bar{n}(t))^2] = \textbf{D}[N(t)] = \lambda t$$
+	Наконец
+	$$\textbf{M}[(\tilde{\lambda} - \lambda)^2] = \textbf{M}\left[\left(\frac{N(t)}{t} - \frac{\bar{n}(t)}{t}\right)^2\right] = \frac{1}{t^2} \textbf{M}[(N(t) - \bar{n}(t))^2] = \frac{\lambda}{t}$$
+	и совершив предельный переход
+	$$\lim_{t \to \infty}{\textbf{M}[(\tilde{\lambda} - \lambda)^2]} = \lim_{t \to \infty}{\frac{\lambda}{t}} = 0$$
+	что и требовалось доказать.
+\end{proof}
+
+\begin{exercise}[Задача 4]
+	Имеется техническое устройство, состоящее из $n=9$ элементов, соединенных по следующей схеме: \\
+	
+	\incfig{2}
+	
+	Элементы могут отказывать по случайному закону, потоки отказов для каждого элемента -- простейшие с интенсивностью $\lambda$. Определить вероятность безотказной работы всей схемы в целом в интервале $[0, t]$ и среднее время безотказной работы. Элементы, включенные параллельно, дублируют друг друга, и для работы схемы достаточно, чтобы работал хотя бы один элемент из параллельно включенных.
+\end{exercise}
+\begin{proof}[Решение]
+	Введем события: $A_i$ -- безотказная работа $i$-го элемента в $[0, t]$; $A$ -- безотказная работа всей системы в $[0, t]$. Согласно условию, введенные события связаны равенством
+	$$A = A_1 A_2 (A_3 A_4 + A_5 A_6) A_7 A_8 A_9$$
+	Поскольку потоки отказов простейшие, то
+	$$\pP(A_i) = p_0 (0, t) = e^{-\lambda t}$$
+	Отказы различных элементов системы \underline{независимы} т.е. события $A_i$ независимы, тогда
+	$$\pP(A) = \pP(A_1) \pP(A_2) \pP(A_3 A_4 + A_5 A_6) \pP(A_7) \pP(A_8) \pP(A_9)$$
+	т.к. 
+	$$\pP(A_3 A_4 + A_5 A_6) = \pP(A_3 A_4) + \pP(A_5 A_6) - \pP(A_3 A_4 A_5 A_6) = 2e^{-2\lambda t} - e^{-4\lambda t}$$
+	и наконец получаем
+	$$\pP(A) = e^{-5\lambda t}\left(2e^{-2\lambda t} - e^{-4\lambda t}\right) = 2e^{-7\lambda t} - e^{-9\lambda t}$$
+	Пусть $T$ -- случайная величина, время безотказной работы схемы. Будем искать среднее время $\bar{t}$ безотказной работы. Обозначим через $F(t)$ -- функцию распределения $T$. По определению функции распределения и тому как мы задали $A$, имеем:
+	$$\pP(A) = \pP\{T > t\} = 1 - F(t)$$
+	$f(t) = \frac{dF (t)}{dt}$ -- плотность вероятности $T$, по определению:
+	$$\bar{t} = \mathbf{M}(T) = \int_{0}^{\infty}{t f(t) dt}$$
+	Представим данный интеграл в виде
+	$$\bar{t} = \int_{0}^{\infty}{t d(F(t) - 1)}$$
+	и воспользуемся интегрированием по частям:
+	\begin{equation*}
+		\bar{t} = t(F(t) - 1) \rvert_{0}^{\infty} - \int_{0}^{\infty}{(F(t) - 1)dt} = \cdots
+	\end{equation*}
+	т.к. $\lim\limits_{t \to +\infty}{F(t)} = 1$
+	\begin{align*}
+		\cdots &= 0 + \int_{0}^{\infty}{(1 - F(t))dt} = \\
+				&= \int_{0}^{\infty}{\pP(A)dt} = \int_{0}^{\infty}{\left(2e^{-7\lambda t} - e^{-9\lambda t}\right) dt} = \\
+				&= \frac{2}{7 \lambda} - \frac{1}{9 \lambda} = \frac{11}{63 \lambda} = \frac{11}{63}\bar{\tau} \approx 0.175\bar{\tau}
+	\end{align*}
+	где $\bar{\tau}$ -- среднее время работы одного элемента, а для простейшего потока \\ $\bar{\tau} = \frac{1}{\lambda}$
+\end{proof}
+\end{document}
