@@ -1,0 +1,123 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[english,russian]{babel}
+\usepackage{hyperref}
+\hypersetup{
+	colorlinks   = true, 
+	urlcolor     = blue, 
+	linkcolor    = blue, 
+	citecolor   = red
+}
+\usepackage{amsthm,amssymb,amsfonts,amsmath}
+\usepackage{physics}
+\usepackage{xcolor}
+\usepackage[left=3cm,right=3cm,
+top=3cm,bottom=3cm,bindingoffset=0cm]{geometry}
+\usepackage{tcolorbox}
+\usepackage{import}
+\usepackage{xifthen}
+
+\newtcolorbox{exercise}[1][]
+{
+	colframe = black!20,
+	colback  = white,
+	coltitle = black,  
+	title    = {#1},
+}
+
+\newcommand{\incfig}[1]{%
+	\def\svgwidth{\columnwidth}
+	\import{./figures/}{#1.pdf_tex}
+}
+\newcommand{\pP}{\mathbf{P}}
+\newcommand{\mean}[1]{\mathbf{M}[#1]}
+
+\author{Самутичев Е.Р.}
+\date{\today}
+\title{}
+
+
+
+\begin{document}
+	
+\maketitle
+
+\begin{exercise}[Задача 6]
+	Рассмотрим поток Кокса бесконечного порядка, характеризуемый законом распределения интервала
+	$$a(\tau) = \sum_{i=1}^{\infty}{(1 - \rho)\rho^{i-1} \lambda_i e^{-\lambda_i \tau}}$$
+	где $\rho \in (0, 1), \lambda_i = \frac{\lambda_0}{i}$. Вычислить коэффициент вариации интервала в таком потоке.
+\end{exercise}
+\begin{proof}[Решение]
+	Проверим что весовые коэффициенты в сумме равны 1:
+	$$\sum_{i=1}^{\infty}{(1-\rho)\rho^{i-1}} = (1-\rho)\sum_{i=1}^{\infty}{\rho^{i-1}} = (1-\rho)\frac{1}{1 - \rho} = 1$$
+	т.е. это действительно поток Кокса. Далее, введем сумму первых $m$ членов ряда: 
+	$$a_m (\tau) = \sum_{i=1}^{m}{(1-\rho)\rho^{i-1} \lambda_i e^{-\lambda_i \tau}}$$
+	
+	Покажем что $\tau a_m (\tau) \to \tau a (\tau), \text{ в } L^1 ([0, \infty))$: 
+	\begin{enumerate}
+		\item $\tau a_m (\tau) \in L^1 ([0, \infty))$ поскольку
+		$$\int_{0}^{\infty}{\tau a_m  (\tau) d\tau} = \sum_{i=1}^{m}{(1 - \rho)\rho^{i-1} \frac{1}{\lambda_i}} = \sum_{i=1}^{m}{(1-\rho)\rho^{i-1} \frac{i}{\lambda_0}} \leq M_1$$
+		где
+		$$M_1 =\sum_{i=1}^{\infty}{(1-\rho)\rho^{i-1} \frac{i}{\lambda_0}} = \frac{1-\rho}{\rho \lambda_0} \sum_{i=0}^{\infty}{\rho^i i} = \frac{1-\rho}{\rho\lambda_0} \cdot \frac{\rho}{(1-\rho)^2} = \frac{1}{(1-\rho)\lambda_0}$$
+		не зависит от $m \in \mathbb{N}$
+		\item $\forall m \in \mathbb{N}: \tau a_m (\tau) \leq \tau a_{m+1} (\tau), \forall \tau \in [0, \infty)$
+		\item $\tau a_m (\tau) \to \tau a (\tau), \forall \tau \in [0, \infty)$ 
+	\end{enumerate}
+	таким образом выполнены условия теоремы Беппо Леви и мы можем вычислить $\bar{\tau}$ следующим образом:
+	\begin{multline*}
+		\bar{\tau} = \mean{\tau} = \int_{0}^{\infty}{\tau a(\tau) d\tau} = \lim_{m\to \infty}{\int_{0}^{\infty}{\tau a_m(\tau) d\tau}} = \frac{1-\rho}{\lambda_0}\lim_{m\to\infty}{\sum_{i=1}^{m}{\rho^{i-1} i}} = M_1
+	\end{multline*}
+	
+	Покажем что $\tau^2 a_m (\tau) \to \tau^2 a_m (\tau), \text{ в } L^1([0, \infty))$:
+	\begin{enumerate}
+		\item $\tau^2 a_m (\tau) \to L^1([0, \infty))$ и кроме того
+		$$\int_{0}^{\infty}{\tau^2 a_m (\tau) d\tau} = \sum_{i=1}^{m}{(1-\rho)\rho^{i-1} \frac{2}{\lambda_i^2}} = 2 \sum_{i=1}^{m}{(1-\rho)\rho^{i-1} \frac{i^2}{\lambda_0^2}} \leq M_2$$
+		где 
+		$$M_2 = 2 \sum_{i=1}^{\infty}{(1-\rho)\rho^{i-1} \frac{i^2}{\lambda_0^2}} = 2\frac{1-\rho}{\rho \lambda_0^2} \sum_{i=0}^{\infty}{\rho^i i^2} = 2\frac{1-\rho}{\rho\lambda_0^2} \cdot \frac{\rho (1+\rho)}{(1-\rho)^3} = 2\frac{1+\rho}{(1-\rho)^2 \lambda_0^2}$$
+		не зависит от $m \in \mathbb{N}$
+	 	\item $\forall m \in \mathbb{N}: \tau^2 a_m (\tau) \leq \tau^2 a_{m+1} (\tau), \forall \tau \in [0, \infty)$
+	 	\item $\tau^2 a_m (\tau) \to \tau^2 a (\tau), \forall \tau \in [0, \infty)$ 
+	\end{enumerate}
+	таким образом выполнены условия теоремы Беппо Леви и мы можем вычислить второй момент следующим образом:
+	\begin{multline*}
+		\mean{\tau^2} = \int_{0}^{\infty}{\tau^2 a(\tau) d\tau} = \lim_{m\to \infty}{\int_{0}^{\infty}{\tau^2 a_m(\tau) d\tau}} = 2\frac{1-\rho}{\lambda_0^2}\lim_{m\to\infty}{\sum_{i=1}^{m}{\rho^{i-1} i^2}} = M_2
+	\end{multline*}
+	
+	Наконец вычислим дисперсию:
+	$$\mathbf{D}[\tau] = \sigma^2_\tau = \mean{\tau^2} - (\mean{\tau})^2 = \frac{2 + 2\rho}{(1-\rho)^2 \lambda_0^2} - \frac{1}{(1-\rho)^2 \lambda_0^2} = \frac{1+2\rho}{(1-\rho)^2 \lambda_0^2}$$
+	И коэффициент вариации:
+	$$\gamma_\tau = \frac{\sigma_\tau}{\bar{\tau}} = \sqrt{1 + 2\rho}$$
+\end{proof}
+
+\begin{exercise}[Задача 4-3]
+	Имеется техническое устройство, состоящее из $n = 9$ элементов, соединенных по следующей схеме:
+	
+	\incfig{2}
+	
+	Элементы могут отказывать по случайному закону, потоки отказов для каждого элемента -- потоки Морзе с параметром $\varkappa = \frac{1}{3}$ и интенсивностью $\lambda$. Определить вероятность безотказной работы всей схемы в целом в интервале $[0, t]$ и среднее время безотказной работы. Элементы, включенные параллельно, дублируют друг друга, и для работы схемы достаточно, чтобы работал хотя бы один элемент из параллельно включенных.
+\end{exercise}
+\begin{proof}[Решение]
+	Введем события $A_i$ -- безотказная работа $i$-го элемента в $[0, t]$; $A$ -- безотказная работа всей системы в $[0, t]$. Поскольку потоки отказов как потоки Морзе являются частным случаем потоков Кокса, то вероятность события $A_i$ равна:
+	$$\pP(A_i) = \sum_{i=1}^{r}{\alpha_i e^{-\lambda_i t}} = \varphi(t)$$
+	где $r = 2$, $\alpha_1 = \varkappa$, $\alpha_2 = 1 - \varkappa$, $\lambda_1 = 2\varkappa\lambda$ и $\lambda_2 = 2(1- \varkappa)\lambda$, итого
+	$$\varphi(t) = \frac{1}{3}e^{-\frac{2}{3} \lambda t} + \frac{2}{3}e^{-\frac{4}{3} \lambda t}$$
+	Аналогично задаче 4-1 получаем
+	$$\pP(A) = \varphi^5 (t) (2 \varphi^2 (t) - \varphi^4 (t)) = 2 \varphi^7 (t) - \varphi^9 (t)$$
+	и тогда среднее время безотказной работы:
+	$$\bar{t} = \int_{0}^{\infty}{(2\varphi^7 (t) - \varphi^9 (t)) dt}$$
+	Введем вспомогательные интегралы
+	$$J_k = \int_{0}^{\infty}{\varphi^k(t) dt}$$
+	через которые
+	$$\bar{t} = 2J_7 - J_9$$
+	Можно показать что
+	$$J_k = \left(\frac{2}{3}\right)^{k-1} \sum_{i=0}^{k}{C_k^i \frac{1}{2^i (2k - i)}} \bar{\tau}$$
+	Вычислим\footnote{был использован язык \textbf{Julia} для вычислительной математики} необходимые нам значения:
+	$$J_7 = \frac{2279153}{17513496}\bar{\tau} \approx 0.13014\bar{\tau}$$
+	$$J_9 = \frac{72444257}{717740595}\bar{\tau} \approx 0.10093\bar{\tau}$$
+	тогда
+	$$\bar{t} \approx 0.15935\bar{\tau}$$
+	Таким образом при переходе от простейшего потока к потоку Морзе -- отношение среднего времени работы системы к среднему времени работы одного элемента уменьшилась в $\approx 1.098$ раз.
+	
+\end{proof}
+
+\end{document}
