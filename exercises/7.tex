@@ -1,0 +1,79 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[english,russian]{babel}
+\usepackage{hyperref}
+\hypersetup{
+	colorlinks   = true, 
+	urlcolor     = blue, 
+	linkcolor    = blue, 
+	citecolor   = red
+}
+\usepackage{amsthm,amssymb,amsfonts,amsmath}
+\usepackage{physics}
+\usepackage{xcolor}
+\usepackage[left=3cm,right=3cm,
+top=3cm,bottom=3cm,bindingoffset=0cm]{geometry}
+\usepackage{tcolorbox}
+\usepackage{import}
+\usepackage{xifthen}
+
+\newtcolorbox{exercise}[1][]
+{
+	colframe = black!20,
+	colback  = white,
+	coltitle = black,  
+	title    = {#1},
+}
+
+\newcommand{\incfig}[1]{%
+	\def\svgwidth{\columnwidth}
+	\import{./figures/}{#1.pdf_tex}
+}
+\newcommand{\pP}{\mathbf{P}}
+\newcommand{\mean}[1]{\mathbf{M}[#1]}
+
+\author{Самутичев Е.Р.}
+\date{\today}
+\title{}
+
+
+
+\begin{document}
+	
+\maketitle
+
+\begin{exercise}[Задача 7]
+	Имеется процесс гибели-размножения характеризуемый следующими интенсивностями
+	$$\lambda_k = \begin{cases}
+		\alpha, &0 \leq k \leq m-1 \\
+		0, &k \geq m
+	\end{cases}$$
+	$$\mu_k = \begin{cases}
+		0, &k > m \\
+		\beta, &1 \leq k \leq m
+	\end{cases}$$
+	Определить финальные вероятности этого процесса $\{p_k\}_{k=0}^{m}$, а также средний установившийся размер популяции.
+\end{exercise}
+\begin{proof}[Решение]
+	Изобразим размеченный граф состояний, соответствующий данному процессу
+	\begin{figure}[h!]
+		\centering
+		\incfig{3}
+	\end{figure}
+
+	Воспользуемся известной формулой для финальных вероятностей процесса гибели-размножения:
+	$$p_n = p_0 \sum_{j=0}^{n}{\frac{\mu_{j+1}}{\lambda_j}} = p_0 \left(\frac{\beta}{\alpha}\right)^n = p_0 \rho^k$$
+	где $\rho = \frac{\beta}{\alpha}$ -- коэффициент использования системы. Запишем условие нормировки
+	$$\sum_{k=0}^{m}{p_0 \rho^k} = 1$$
+	т.е. 
+	$$p_0 \frac{1 - \rho^{m+1}}{1 - \rho} = 1$$
+	откуда
+	$$p_0 = \frac{1 - \rho}{1 - \rho^{m+1}}$$
+	
+	Найдем средний установившийся размер популяции:
+	\begin{multline*}
+		\bar{n} = \mean{N} = \sum_{k=0}^{m}{k p_k} = p_0 \sum_{k=1}^{m}{k \rho^k} = p_0 \rho \frac{1 - (m+1)\rho^m + m\rho^{m+1}}{(1-\rho)^2} = \\ = \rho \frac{p_0 + m p_0 \rho^{m+1} - (m+1)p_m}{(1-\rho)^2} = \rho \frac{1 - \rho}{1 - \rho^{m+1}} \frac{1 - (m+1)\rho^m + m\rho^{m+1}}{(1-\rho)^2} = \\ = \rho \frac{1 - (m+1)\rho^m + m\rho^{m+1}}{(1-\rho)(1 - \rho^{m+1})} = \frac{\beta}{\alpha - \beta} \frac{1 - (m+1)\rho^m + m\rho^{m+1}}{1 - \rho^{m+1}} = \\ = \frac{\beta}{\alpha - \beta} \frac{1 - (m+1)\rho^m + (m+1)\rho^{m+1} - \rho^{m+1}}{1 - \rho^{m+1}} = \\ = \frac{\beta}{\alpha - \beta} \left[1 - (m+1) \rho^m \frac{1 - \rho}{1-\rho^{m+1}}\right] = \frac{\alpha}{\alpha - \beta}\left[1 - (m+1)p_m\right]
+	\end{multline*}
+\end{proof}
+	
+\end{document}
