@@ -1,0 +1,158 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[english,russian]{babel}
+\usepackage{hyperref}
+\hypersetup{
+	colorlinks   = true, 
+	urlcolor     = blue, 
+	linkcolor    = blue, 
+	citecolor   = red
+}
+\usepackage{amsthm,amssymb,amsfonts,amsmath}
+\usepackage{physics}
+\usepackage{xcolor}
+\usepackage[left=3cm,right=3cm,
+top=3cm,bottom=3cm,bindingoffset=0cm]{geometry}
+\usepackage{tcolorbox}
+\usepackage{import}
+\usepackage{xifthen}
+
+\newtcolorbox{exercise}[1][]
+{
+	colframe = black!20,
+	colback  = white,
+	coltitle = black,  
+	title    = {#1},
+}
+
+\newcommand{\incfig}[1]{%
+	\def\svgwidth{\columnwidth}
+	\import{./figures/}{#1.pdf_tex}
+}
+\newcommand{\pP}{\mathbf{P}}
+\newcommand{\mean}[1]{\mathbf{M}[#1]}
+
+\author{Самутичев Е.Р.}
+\date{\today}
+\title{}
+
+
+
+\begin{document}
+	
+\maketitle
+
+\begin{exercise}[Задача 4-4]
+	Имеется техническое устройство, состоящее из $n = 9$ элементов, соединенных по следующей схеме:
+	
+	\incfig{2}
+	
+	Элементы могут отказывать по случайному закону, потоки отказов для каждого элемента -- простейшие с интенсивностью $\lambda_i$ для $i$-го элемента, элементы отказывают по одному. Требуется рассмотреть возможные состояния системы, записать уравнения Колмогорова и наметить их решение.
+\end{exercise}
+\begin{proof}[Решение]
+	Для моделирования работы схемы выделим следующие состояния: \\
+	$S_1$ -- все элементы работают \\
+	$S_2$ -- не работает элемент 3 \\
+	$S_3$ -- не работает элемент 4 \\
+	$S_4$ -- не работает элемент 5 \\
+	$S_5$ -- не работает элемент 6 \\
+	$S_6$ -- не работают элементы 3, 4 \\
+	$S_7$ -- не работают элементы 5, 6 \\
+	$S_8$ -- схема вышла из строя
+	
+	Переходы между состояниями $S_i \rightarrow S_j$ можно описать таблицей:
+	\begin{table}[h!]
+		\centering
+		\begin{tabular}{|l|l|l|}
+			\hline
+			$i$ & $j$ & Интенсивность \\ \hline
+			1 & 2 & $\lambda_3$ \\ \hline
+			1 & 3 & $\lambda_4$ \\ \hline
+			1 & 4 & $\lambda_5$ \\ \hline
+			1 & 5 & $\lambda_6$ \\ \hline
+			1 & 8 & $\lambda_1 + \lambda_2 + \lambda_7 + \lambda_8 + \lambda_9$ \\ \hline
+			2 & 6 & $\lambda_4$ \\ \hline
+			2 & 8 & $\lambda_1 + \lambda_2 + \lambda_5 + \lambda_6 + \lambda_7 + \lambda_8 + \lambda_9$ \\ \hline
+			3 & 6 & $\lambda_3$ \\ 
+		\end{tabular}
+	\end{table}
+	\begin{table}[h!]
+		\centering
+		\begin{tabular}{|l|l|l|}
+			3 & 8 & $\lambda_1 + \lambda_2 + \lambda_5 + \lambda_6 + \lambda_7 + \lambda_8 + \lambda_9$ \\ \hline
+			4 & 7 & $\lambda_6$ \\ \hline
+			4 & 8 & $\lambda_1 + \lambda_2 + \lambda_3 + \lambda_4 + \lambda_7 + \lambda_8 + \lambda_9$ \\ \hline
+			5 & 7 & $\lambda_5$ \\ \hline
+			5 & 8 & $\lambda_1 + \lambda_2 + \lambda_3 + \lambda_4 + \lambda_7 + \lambda_8 + \lambda_9$ \\ \hline 
+			6 & 8 & $\lambda_1 + \lambda_2 + \lambda_5 + \lambda_6 + \lambda_7 + \lambda_8 + \lambda_9$ \\ \hline
+			7 & 8 & $\lambda_1 + \lambda_2 + \lambda_3 + \lambda_4 + \lambda_7 + \lambda_8 + \lambda_9$\\ \hline
+		\end{tabular}
+	\end{table}
+	
+	Запишем уравнения Колмогорова:
+	\begin{align*}
+		\frac{d p_1}{d t} &= -p_1 \sum_{i=1}^{9}{\lambda_i} \\
+		\frac{d p_2}{d t} &= -p_2 \sum_{\substack{i = 1 \\ i \neq 3}}^{9}{\lambda_i} + p_1 \lambda_3 \\
+		\frac{d p_3}{d t} &= -p_3 \sum_{\substack{i = 1 \\ i \neq 4}}^{9}{\lambda_i} + p_1 \lambda_4 \\
+		\frac{d p_4}{d t} &= -p_4 \sum_{\substack{i = 1 \\ i \neq 5}}^{9}{\lambda_i} + p_1 \lambda_5 \\
+		\frac{d p_5}{d t} &= -p_5 \sum_{\substack{i = 1 \\ i \neq 6}}^{9}{\lambda_i} + p_1 \lambda_6 \\
+		\frac{d p_6}{d t} &= -p_6 \sum_{\substack{i = 1 \\ i \neq 3, 4}}^{9}{\lambda_i} + p_2 \lambda_4 + p_3 \lambda_3 \\
+		\frac{d p_7}{d t} &= -p_7 \sum_{\substack{i = 1 \\ i \neq 5, 6}}^{9}{\lambda_i} + p_4 \lambda_6 + p_5 \lambda_5 \\
+		\frac{d p_8}{d t} &= p_1 (\lambda_1 + \lambda_2 + \lambda_7 + \lambda_8 + \lambda_9) + (p_2 + p_3 + p_6) \sum_{\substack{i = 1 \\ i \neq 3, 4}}^{9}{\lambda_i} + (p_4 + p_5 + p_7) \sum_{\substack{i = 1 \\ i \neq 5, 6}}^{9}{\lambda_i}
+	\end{align*}
+	с начальными условиями $p_1 (0) = 1$ и $p_i (0) = 0, i = 2, 3, ..., 8$. Последнее уравнение заменим на условие нормировки, получив
+	$$p_8 (t) = 1 - \sum\limits_{i=1}^{7}{p_i (t)}$$
+	
+	Решение первого уравнения системы:
+	$$p_1 (t) = e^{-t\sum\limits_{i=1}^{9}{\lambda_i}}$$
+	Решение последующих уравнений возможно через преобразование Лапласа, в частности рассмотрим как получить решение 2-го уравнения перейдя к изображениям
+	$$s P_2 (s) - p_2 (0) = -P_2 (s) \sum_{\substack{i = 1 \\ i \neq 3}}^{9}{\lambda_i} + P_1 (s) \lambda_3 = -P_2 (s) \sum_{\substack{i = 1 \\ i \neq 3}}^{9}{\lambda_i} + \frac{1}{s + \sum\limits_{i=1}^{9}{\lambda_i}}$$
+	откуда
+	$$P_2 (s) = \frac{1}{s + \sum\limits_{\substack{i=1 \\ i \neq 3}}^{9}{\lambda_i}} \frac{1}{s + \sum\limits_{i=1}^{9}{\lambda_i}}$$
+	и вернувшись к оригиналам
+	$$p_2 (t) = \int_{0}^{t}{\exp(-\tau \sum\limits_{\substack{i = 1 \\ i \neq 3}}^{9}{\lambda_i}) p_1 (t - \tau)d\tau}$$
+	и т.д.
+\end{proof}
+
+\newpage
+
+\begin{exercise}[Задача 4-5]
+	Имеется техническое устройство, состоящее из $n = 9$ элементов, соединенных по следующей схеме:
+	
+	\incfig{2}
+	
+	Элементы могут отказывать по случайному закону, потоки отказов для каждого элемента -- простейшие с интенсивностью $\lambda_i$ для $i$-го элемента, элементы отказывают по одному. Схема ремонтируется, ремонт начинается после первого отказа с интенсивностью $\mu$ и продолжается до восстановления устройства. Требуется вычислить финальные вероятности возможных состояний системы.
+\end{exercise}
+\begin{proof}[Решение]
+	Состояния выделяем как в задаче 4-4, запишем уравнения для финальных вероятностей с учетом ремонта, заменив последнее уравнение на условие нормировки:
+	\begin{align*}
+	&-p_1^{(\infty)} \sum_{i=1}^{9}{\lambda_i} + \mu \sum_{i=2}^{9}{p_i^{(\infty)}}= 0\\
+	&-p_2^{(\infty)} \sum_{\substack{i = 1 \\ i \neq 3}}^{9}{\lambda_i} + p_1^{(\infty)} \lambda_3 - \mu p_2^{(\infty)}= 0 \\
+	&-p_3^{(\infty)} \sum_{\substack{i = 1 \\ i \neq 4}}^{9}{\lambda_i} + p_1^{(\infty)} \lambda_4 - \mu p_3^{(\infty)} = 0 \\
+	&-p_4^{(\infty)} \sum_{\substack{i = 1 \\ i \neq 5}}^{9}{\lambda_i} + p_1^{(\infty)} \lambda_5 - \mu p_4^{(\infty)} = 0 \\
+	&-p_5^{(\infty)} \sum_{\substack{i = 1 \\ i \neq 6}}^{9}{\lambda_i} + p_1^{(\infty)} \lambda_6 - \mu p_5^{(\infty)} = 0 \\
+	&-p_6^{(\infty)} \sum_{\substack{i = 1 \\ i \neq 3, 4}}^{9}{\lambda_i} + p_2^{(\infty)} \lambda_4 + p_3^{(\infty)} \lambda_3 - \mu p_6^{(\infty)} = 0 \\
+	&-p_7^{(\infty)} \sum_{\substack{i = 1 \\ i \neq 5, 6}}^{9}{\lambda_i} + p_4^{(\infty)} \lambda_6 + p_5^{(\infty)} \lambda_5 - \mu p_7^{(\infty)} = 0 \\
+	&\sum_{i=1}^{8}{p_i^{(\infty)}} = 1
+	\end{align*}
+	Подставляя условие нормировки в первое уравнение, получаем:
+	\begin{equation*}
+		-p_1^{(\infty)} \sum_{i=1}^{9}{\lambda_i} + \mu (1 - p_1^{(\infty)}) = 0
+	\end{equation*}
+	Т.е.
+	\begin{equation*}
+		p_1^{(\infty)} = \frac{\mu}{\sum_{i=1}^{9}{\lambda_i} + \mu}
+	\end{equation*}
+	Остальные финальные вероятности последовательно выражаются, предыдущие через последующие:
+	\begin{align*}
+		p_2^{(\infty)} = \frac{\lambda_3 p_1^{(\infty)}}{\sum_{\substack{i = 1 \\ i \neq 3}}^{9}{\lambda_i} + \mu} \\
+		p_3^{(\infty)} = \frac{\lambda_4 p_1^{(\infty)}}{\sum_{\substack{i = 1 \\ i \neq 4}}^{9}{\lambda_i} + \mu} \\
+		p_4^{(\infty)} = \frac{\lambda_5 p_1^{(\infty)}}{\sum_{\substack{i = 1 \\ i \neq 5}}^{9}{\lambda_i} + \mu} \\
+		p_5^{(\infty)} = \frac{\lambda_6 p_1^{(\infty)}}{\sum_{\substack{i = 1 \\ i \neq 6}}^{9}{\lambda_i} + \mu} \\
+		p_6^{(\infty)} = \frac{\lambda_4 p_2^{(\infty)} + \lambda_3 p_3^{(\infty)}}{\sum_{\substack{i = 1 \\ i \neq 3, 4}}^{9}{\lambda_i} + \mu} \\
+		p_7^{(\infty)} = \frac{\lambda_6 p_4^{(\infty)} + \lambda_5 p_5^{(\infty)}}{\sum_{\substack{i = 1 \\ i \neq 5, 6}}^{9}{\lambda_i} + \mu} \\
+		p_8^{(\infty)} = 1 - \sum_{i=1}^{7}{p_i^{(\infty)}}
+	\end{align*}
+\end{proof}
+
+\end{document}
