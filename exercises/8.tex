@@ -1,0 +1,306 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[english,russian]{babel}
+\usepackage{hyperref}
+\hypersetup{
+	colorlinks   = true, 
+	urlcolor     = blue, 
+	linkcolor    = blue, 
+	citecolor   = red
+}
+\usepackage{amsthm,amssymb,amsfonts,amsmath}
+\usepackage{physics}
+\usepackage{xcolor}
+\usepackage[left=3cm,right=3cm,
+top=3cm,bottom=3cm,bindingoffset=0cm]{geometry}
+\usepackage{tcolorbox}
+\usepackage{import}
+\usepackage{xifthen}
+
+\newtcolorbox{exercise}[1][]
+{
+	colframe = black!20,
+	colback  = white,
+	coltitle = black,  
+	title    = {#1},
+}
+
+\newcommand{\incfig}[1]{%
+	\def\svgwidth{\columnwidth}
+	\import{./figures/}{#1.pdf_tex}
+}
+\newcommand{\pP}{\mathbf{P}}
+\newcommand{\mean}[1]{\mathbf{M}[#1]}
+
+\author{Самутичев Е.Р.}
+\date{\today}
+\title{}
+
+
+
+\begin{document}
+	
+\maketitle
+
+\begin{exercise}[Задача 8]
+	Рассмотрим систему с ожиданием на вход которой поступает простейший поток требований с интенсивностью $\lambda$. Единственный канал обслуживания обслуживает \textbf{пары} требований по показательному закону с интенсивностью $\mu$. Если в очереди остается только \textbf{одно} требование, то оно также поступает на обслуживание, интенсивность обслуживания при этом также равняется $\mu$. Найти среднее число требований находящихся в системе в установившемся режиме. 
+\end{exercise}
+\begin{proof}[Решение]
+	Изобразим размеченный граф состояний системы. Пара $(n, s)$ означает что в накопителе ожидают $n \in \mathbb{N}\cup{0}$ требований, а обслуживаются $s = 1, 2$ требований. Таким образом, в системе находится $n + s$ требований. {\color{red}Красными} стрелками обозначим переходы с интенсивностью {\color{red}$\lambda$} соответствующие поступлению очередного требования в систему, а {\color{blue}синими} стрелками обозначим переходы с интенсивностью {\color{blue}$\mu$} соответствующие завершению обслуживания в канале.
+	\begin{figure}[h!]
+		\centering
+		\scalebox{0.8}{\incfig{4}}
+	\end{figure}
+
+	При анализе системы будем считать что
+	\begin{equation*}
+		0 < \lambda < 2\mu
+	\end{equation*}
+	т.к. максимальное число требований на обслуживании равняется двум и вместе они обслуживаются с интенсивностью $\mu$, значит если интенсивность $\lambda$ потока требований превысит $2\mu$, получаем хаотические скопления требований и анализ такой системы затруднен. Понятно что в случае $\lambda = 0$ -- система тривиальна, требования попросту не поступают.
+	
+	Запишем уравнения Колмогорова для финальных вероятностей, вначале для частных случаев (состояния $(0, 0), \ (0, 1), \ (0, 2), \ (1, 1), \ (1, 2)$):
+	\begin{align}\label{eq:1}
+	\begin{split}
+		&\mu P_{(0, 1)} + \mu P_{(0, 2)} - \lambda P_{(0, 0)} = 0 \\
+		&\lambda P_{(0, 0)} + \mu P_{(1, 1)} + \mu P_{(1, 2)} - (\mu + \lambda) P_{(0, 1)} = 0 \\
+		&\mu P_{(2, 1)} + \mu P_{(2, 2)} - (\mu + \lambda) P_{(0, 2)} = 0 \\
+		&\lambda P_{(0, 1)} - (\mu + \lambda) P_{(1, 1)} = 0 \\
+		&\lambda P_{(0, 2)} + \mu P_{(3, 1)} + \mu P_{(3, 2)} - (\mu + \lambda) P_{(1, 2)} = 0 
+	\end{split}
+	\end{align}
+	
+	Для оставшихся состояний $P_{(n, 1)}, \ P_{(n, 2)}$ при $n \geq 2$:
+	\begin{align}\label{eq:2}
+	\begin{split}
+		&\lambda P_{(n-1, 1)} - (\mu + \lambda) P_{(n, 1)} = 0 \\
+		&\lambda P_{(n-1, 2)} + \mu P_{(n+2, 1)} + \mu P_{(n+2, 2)} - (\mu + \lambda) P_{(n, 2)} = 0
+	\end{split}
+	\end{align}
+	
+	Добавим условие нормировки:
+	\begin{equation}
+		P_{(0, 0)} + P_{(0, 1)} + P_{(0, 2)} + \sum_{n=1}^{\infty}{P_{(n, 1)}} + \sum_{n=1}^{\infty}{P_{(n, 2)}} = 1
+	\end{equation}
+	
+	Используя 4-ое уравнение из \eqref{eq:1} и 1-ое из \eqref{eq:2} получаем для $n \geq 0$:
+	\begin{equation}\label{eq:3}
+		P_{(n, 1)} = \left(\frac{\lambda}{\mu + \lambda}\right)^n P_{(0, 1)}
+	\end{equation}
+	
+	Используя первые 2 уравнения из \eqref{eq:1} вместе с \eqref{eq:3} получаем:
+	\begin{align}\label{eq:4}
+	\begin{split}
+		&P_{(0, 2)} = \frac{\lambda}{\mu} P_{(0, 0)} - P_{(0, 1)} \\
+		&P_{(1, 2)} = \frac{\mu + \lambda}{\mu} P_{(0, 1)} - \frac{\lambda}{\mu + \lambda} P_{(0, 1)} - \frac{\lambda}{\mu} P_{(0, 0)}
+	\end{split}
+	\end{align}
+	
+	Воспользуемся методом производящих функций, определим
+	\begin{equation}\label{eq:5}
+		G(z) = P_{(0, 0)} + P_{(0, 1)} z + P_{(0, 2)} z^2 + \sum_{n=1}^{\infty}{P_{(n, 1)} z^{n+1}} + \sum_{n=1}^{\infty}{P_{(n, 2)} z^{n+2}}
+	\end{equation}
+	
+	Введем обозначение:
+	\begin{equation}\label{eq:a}
+		a = \frac{\lambda}{\mu + \lambda}
+	\end{equation}
+	
+	Используя \eqref{eq:3} преобразуем \eqref{eq:5}:
+	\begin{multline}\label{eq:7}
+		G(z) = P_{(0, 0)} + P_{(0, 1)} z + P_{(0, 2)} z^2 + P_{(0, 1)} z \sum_{n=1}^{\infty}{a^n z^n} + \sum_{n=1}^{\infty}{P_{(n, 2)} z^{n+2}} = \\ 
+		= P_{(0, 0)} + P_{(0, 1)} z + P_{(0, 2)} z^2 + P_{(0, 1)} \frac{az}{1 - az} + \sum_{n=1}^{\infty}{P_{(n, 2)} z^{n+2}}
+	\end{multline}
+	
+	Используя \eqref{eq:4} преобразуем \eqref{eq:7}:
+	\begin{equation}\label{eq:8}
+		G(z) = P_{(0, 0)} + P_{(0, 1)} z + \left(\frac{\lambda}{\mu} P_{(0, 0)} - P_{(0, 1)}\right) z^2 + P_{(0, 1)} \frac{az}{1 - az} + \sum_{n=1}^{\infty}{P_{(n, 2)} z^{n+2}}
+	\end{equation}
+	
+	Отдельно рассмотрим
+	\begin{equation*}
+		R(z) = \sum_{n=1}^{\infty}{P_{(n, 2)} z^{n+2}}
+	\end{equation*}
+	и заметим что в силу условия нормировки:
+	\begin{equation}\label{eq:11}
+		R(1) = \sum_{n=1}^{\infty}{P_{(n, 2)}} \leq 1 < \infty
+	\end{equation}
+	так что
+	\begin{equation}\label{eq:9}
+		R(z) = \sum_{n=1}^{\infty}{P_{(n, 2)} z^{n+2}} < \infty, \forall z \in (-1, 1)
+	\end{equation}
+	
+	Воспользуемся 5-м уравнением из \eqref{eq:1} и 2-м из \eqref{eq:2}:
+	\begin{multline*}\label{eq:6}
+		R(z) = \frac{1}{\mu + \lambda} \sum_{n=1}^{\infty}{\left(\lambda P_{(n-1, 2)} + \mu P_{(n+2, 1)} + \mu P_{(n+2, 2)}\right) z^{n+2}} = \\
+		= a \sum_{n=1}^{\infty}{P_{(n-1, 2)} z^{n+2}} + (1 - a)\sum_{n=1}^{\infty}{P_{(n+2, 1)} z^{n+2}} + (1 - a)\sum_{n=1}^{\infty}{P_{(n+2, 2)} z^{n+2}} = \\
+		= a P_{(0, 2)} z^2 + azR(z) + (1 - a) P_{(0, 1)} \sum_{n=1}^{\infty}{a^{n+2} z^{n+2}} + (1 - a) \frac{1}{z^2}\sum_{n=1}^{\infty}{P_{(n+2, 2)} z^{n+4}} = \\ 
+		= a P_{(0, 2)} z^2 + azR(z) + P_{(0, 1)} (1 - a) \frac{(az)^3}{1 - az} + (1 - a)z^{-2} R(z) - (1 - a) (P_{(1, 2)} z + P_{(2, 2)} z^2)
+	\end{multline*}
+	
+	Отсюда
+	\begin{equation*}
+		(1 - az - (1-a)z^{-2})R(z) = a P_{(0, 2)} z^2 + P_{(0, 1)} (1 - a) \frac{(az)^3}{1 - az} - (1 - a) (P_{(1, 2)} z + P_{(2, 2)} z^2)
+	\end{equation*}
+	Выразим $R(z)$ как
+	\begin{equation}\label{eq:12}
+	R(z) = \frac{a P_{(0, 2)} z^2 + P_{(0, 1)} (az)^3 \frac{1 - a}{1 - az} - (1 - a) (P_{(1, 2)} z + P_{(2, 2)} z^2)}{1 - az + (a-1)z^{-2}}
+	\end{equation}
+	Заметим что знаменатель этого выражения обращается в нуль на корнях уравнения
+	$$z^2 - az^3 + (a - 1) = 0$$
+	Найти их, в зависимости от параметра $a$ нетрудно, приняв во внимание что из \eqref{eq:a}:
+	$$0 < a < \frac{2}{3}$$
+	И так:
+	\begin{align}\label{eq:roots}
+	\begin{split}
+		z_0 &= 1 \\
+		z_1 &= \frac{1 - a + \sqrt{(1+3a)(1-a)}}{2a} \\
+		z_2 &= \frac{1 - a - \sqrt{(1+3a)(1-a)}}{2a}
+	\end{split}
+	\end{align}
+	причем при возможных значениях $a$:
+	$$(1 + 3a)(1 - a) > 0$$
+	т.е. формулы корректны.
+	
+	Посмотрим чему равен знаменатель \eqref{eq:12} при $z = z_0 = 1$. Для простоты введем обозначения
+	\begin{align}\label{eq:x}
+	\begin{split}
+	x_0 &= P_{(0, 0)} \\
+	x_1 &= P_{(0, 1)}
+	\end{split}
+	\end{align}
+	И так:
+	\begin{equation}\label{eq:10}
+		aP_{(0, 2)} + a^3 P_{(0, 1)} - (1 - a)(P_{(1, 2)} + P_{(2, 2)}) = \cdots
+	\end{equation}
+	Сложив 2-е и 3-е уравнения из \eqref{eq:1} получаем
+	\begin{multline*}
+		\mu \left(P_{(2, 2)} + P_{(1, 2)}\right) =  (\mu + \lambda)\left(P_{(0, 1)} + P_{(0, 2)}\right) - \mu P_{(1, 1)} - \lambda P_{(0, 0)} - \mu P_{(2, 1)} = \\ = (1 - a)^{-1} \lambda x_0 - \left(\mu a x_1 + \lambda x_0 + \mu a^2 x_1\right)
+	\end{multline*}
+	И теперь из \eqref{eq:10}:
+	\begin{equation*}
+		\cdots = a \left(\frac{\lambda}{\mu} x_0 - x_1\right) + a^3 x_1 - \frac{1}{\lambda + \mu} \left((1 - a)^{-1} \lambda x_0 - \left(\mu a x_1 + \lambda x_0 + \mu a^2 x_1\right)\right) = \cdots
+	\end{equation*}
+	Сгруппировав слагаемые получаем что
+	\begin{equation*}
+		\cdots = \left(a \frac{\lambda}{\mu} - \frac{\lambda}{\mu} + a\right) x_0 + \left(a^3 - a + a(1 - a) + a^2 (1 - a)\right) x_1 = 0
+	\end{equation*} 
+	т.е. знаменатель равен нулю и это ожидаемо в силу \eqref{eq:11} и \eqref{eq:roots}. 
+	
+	Легко проверить что при возможных значениях $a$:
+	\begin{equation*}
+		-1 < z_2 < 0
+	\end{equation*}
+	и с учетом \eqref{eq:9} это означает что числитель \eqref{eq:12} также должен обращаться в нуль при $z = z_2$. Упростим числитель, обозначив его за $W(z)$ т.е.
+	\begin{equation*}
+		R(z) = \frac{W(z)}{1 - az + (a-1)z^{-2}}
+	\end{equation*} 
+	Воспользуемся 3-м уравнением \eqref{eq:1}, выразив $P_{(2, 2)}$:
+	\begin{equation*}
+		P_{(2, 2)} = \frac{1}{\mu}\left((\mu + \lambda) P_{(0, 2)} - \mu a^2 x_1\right) = (1 - a)^{-1} \frac{\lambda}{\mu} x_0 - (1 - a)^{-1} x_1  - a^2 x_1
+	\end{equation*}
+	С учетом \eqref{eq:4} получаем что:
+	\begin{multline*}
+		W(z) = x_0 \left(a \frac{\lambda}{\mu} z^2 + a z - \frac{\lambda}{\mu}\right) + \\ + x_1 \left((az)^3 \frac{1-a}{1-az} - az^2 - z + (1-a)az + z^2 + a^2 (1 - a)z^2\right)
+	\end{multline*}
+	Заметим что $W(1) = 0$, это совпадает с результатом полученным ранее. 
+	
+	Поскольку
+	$$W(z_2) = 0$$
+	получаем
+	\begin{equation}\label{eq:C}
+		x_0 = \frac{az_2^2 + z_2 - (az_2)^3 \tfrac{1-a}{1-az_2} - (1-a)az_2 - z_2^2 - a^2 (1-a)z_2^2}{a \frac{\lambda}{\mu} z_2^2 + a z_2 - \frac{\lambda}{\mu}} x_1 = C(a) x_1
+	\end{equation}
+	где $C(a)$ зависит только от $a$ т.к. $z_2$ также зависит от $a$ из \eqref{eq:roots}.
+	
+	Теперь найдем $R(1)$. Поскольку из выражения \eqref{eq:12} оно не определено, получается неопределенность $\frac{0}{0}$, мы можем перейти к пределу и воспользоваться правилом Лопиталя:
+	\begin{equation*}
+		R(1) = \lim_{z \to 1}{\frac{W(z)}{1 - az + (a-1)z^{-2}}} = \lim_{z \to 1}{\frac{W^\prime(z)}{-a - 2(a-1)z^{-3}}}
+	\end{equation*}
+	Найдем производную числителя т.к. помимо вычисления предела, она нам еще потребуется в дальнейшем:
+	\begin{multline*}
+		W^\prime (z) = x_0 \left(2 a \frac{\lambda}{\mu} z + a\right) + \\ 
+		+ x_1 \left(3a^3 z^2 \frac{1-a}{1-az} + (az)^3 \frac{a(1-a)}{(1-az)^2} - 2az - 1 + (1 - a)a + 2z + 2a^2 (1 - a) z \right)
+	\end{multline*}
+	Тогда
+	\begin{equation}\label{eq:D}
+		R(1) = \frac{W^\prime (1)}{2 - 3a} = x_1 \frac{C(a)\left(2a\frac{\lambda}{\mu} + a\right) + a^3 \left(1 + \frac{a}{1-a}\right) + a^2 - a +1}{2 - 3a} = x_1 D(a)
+	\end{equation}
+	Заметим что $2 - 3a \neq 0$ при допустимых значениях $a$.
+	
+	Теперь мы можем использовать условие нормировки, с учетом \eqref{eq:8}:
+	\begin{equation*}
+		G(1) = x_0 (1 - a)^{-1} + x_1 \frac{a}{1-a} + R(1) = \left( \frac{C(a) + a}{1-a} + D(a)\right) x_1 = 1
+	\end{equation*}
+	откуда
+	\begin{equation}
+		x_1 = \frac{1}{\frac{C(a) + a}{1-a} + D(a)}
+	\end{equation}
+	и соответственно
+	\begin{equation}
+		x_0 = \frac{C(a)}{\frac{C(a) + a}{1-a} + D(a)}
+	\end{equation}
+	где $C(a)$ из \eqref{eq:C}, а $D(a)$ из \eqref{eq:D}. Остальные финальные вероятности можно получить из $x_0$ и $x_1$.
+	
+	В заключение, найдем среднее число требований находящихся в системе в установившемся режиме:
+	\begin{equation*}
+		\mean{n + s} = P_{(0, 1)} \cdot 1 + P_{(0, 2)} \cdot 2 + \sum_{n=1}^{\infty}{P_{(n, 1)} (n + 1)} + \sum_{n=1}^{\infty}{P_{(n, 2)} (n+2)} = G^\prime (1)
+	\end{equation*}
+	или
+	\begin{equation*}
+		\mean{n + s} = \left(2 \frac{\lambda}{\mu} C(a) - 1\right)x_1 + \frac{a (1 - a) + a^2}{(1-a)^2} x_1 + R^\prime (1)
+	\end{equation*}
+	Т.к.
+	\begin{equation*}
+		R^\prime (z) \left(1 - az - (1-a)z^{-2}\right) + R(z) \left(-a + 2(1-a)z^{-3}\right) = W^\prime (z)
+	\end{equation*}
+	и 
+	\begin{equation*}
+		R^{\prime\prime} (z) \left(1 - az - (1-a)z^{-2}\right) + 2R^\prime (z) \left(-a + 2(1-a)z^{-3}\right) - 6(1-a)z^{-4} R(z) = W^{\prime\prime} (z)
+	\end{equation*}
+	нам остается найти $W^{\prime\prime} (1)$ для вычисления $R^\prime (1)$. Выражение для $W^\prime (z)$ было получено ранее, дифференцируем его:
+	\begin{multline*}
+		W^{\prime\prime} (z) = 2 a \frac{\lambda}{\mu} C(a) x_1 + \\
+		+ x_1 \left(6a^3 \frac{1-a}{1-az} + 6a^3 z^2 \frac{(1-a)a}{(1-az)^2} + 2(az)^3 \frac{a^2 (1-a)}{(1-az)^3} - 2a + 2 + 2a^2 (1 - a)\right) 
+	\end{multline*}
+	Тогда
+	\begin{multline*}
+		W^{\prime\prime}(1) = \left(2a\frac{\lambda}{\mu} + 6a^3 + 6a^3 \frac{a}{1-a} + 2a^3 \frac{a^2}{(1-a)^2} - 2a + 2 + 2a^2 (1-a)\right)x_1 = \\
+		= 2 \frac{1 - 3a + 5a^2 - 2a^3}{(1-a)^2} x_1
+	\end{multline*}
+	и 
+	\begin{equation}\label{eq:R}
+		R^\prime (1) = \frac{6 (1-a) x_1 D(a) + W^{\prime\prime} (1)}{2\left(2 - 3a\right)} = \frac{(1-a)^3 D(a) + 1 - 3a + 5a^2 - 2a^3}{(1-a)^2(2 - 3a)} x_1
+	\end{equation}
+	
+	И так:
+	\begin{equation}\label{eq:mean}
+		\mean{n + s} = \frac{2 \frac{a}{1-a} C(a) - 1 + \frac{a}{(1-a)^2} + \frac{(1-a)^3 D(a) + 1 - 3a + 5a^2 - 2a^3}{(1-a)^2(2 - 3a)}}{\frac{C(a) + a}{1-a} + D(a)}
+	\end{equation}
+	где с учетом того что $\frac{\lambda}{\mu} = a (1-a)^{-1}$:
+	\begin{align*}
+		C(a) &= \frac{az_2^2 + z_2 - (az_2)^3 \tfrac{1-a}{1-az_2} - (1-a)az_2 - z_2^2 - a^2 (1-a)z_2^2}{\frac{a^2}{1-a} z_2^2 + a z_2 - \frac{a}{1-a}} \\
+		D(a) &= \frac{C(a)\left(2\frac{a^2}{1-a} + a\right) + a^3 \left(1 + \frac{a}{1-a}\right) + a^2 - a +1}{2 - 3a} \\
+		z_2 &= \frac{1 - a - \sqrt{(1+3a)(1-a)}}{2a}
+	\end{align*}
+	
+	Поскольку формулы достаточно громоздкие\footnote{можно было бы и упростить, но автору не хватило терпения...}, необходимо их как-то верифицировать. Например, изучить поведение $x_0 = P_{(0, 0)}$ и $x_1 = P_{(0, 1)}$ в зависимости от $a = \frac{\lambda}{\mu + \lambda}$:
+	
+	\begin{figure}[h!]
+		\centering
+		\includegraphics[scale=0.24]{./julia_scripts/plot1.pdf}
+	\end{figure}
+
+	Видим что $P_{(0, 0)} \approx 1$ при малых значениях $a$ т.е. когда $\lambda$ много меньше $\mu$. Это ожидаемо т.к. в таком случае система практически моментально обслуживает очередное поступившее требование и большую часть времени не выходит из состояния $(0, 0)$ соответствующего пустой очереди и пустому каналу обслуживания, следовательно финальная вероятность этого состояния близка к единице. Также мы видим что как $P_{(0, 0)}$, так и $P_{(0, 1)}$ не превосходят единицы при допустимых значениях $a$. Так и должно быть, ведь это вероятности!
+	
+	\newpage
+	
+	Также построим график зависимости среднего числа требований от параметра $a = \frac{\lambda}{\mu + \lambda}$. Понятно что чем больше отношение $\frac{\lambda}{\mu}$, а пропорционально ему и $a$, тем больше требований собирается в накопителе (система не успевает их обрабатывать) и величина $\mean{n+s}$ должна отражать этот факт:
+	\begin{figure}[h!]
+		\centering
+		\includegraphics[scale=0.24]{./julia_scripts/plot2.pdf}
+	\end{figure}
+
+	Видим что $\mean{n+s}$ монотонно возрастает и $a = \frac{2}{3}$ -- критическая точка. Действительно, в этом случае $\lambda = 2\mu$ и, как было сказано в начале решения, система становится хаотической.
+\end{proof}
+	
+\end{document}
