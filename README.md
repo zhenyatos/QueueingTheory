@@ -1,6 +1,6 @@
 # QueueingTheory
 
-Мои заметки по курсу теории массового обслуживания [Зайца Олега Ивановича](https://www.researchgate.net/profile/Oleg-Zayats) в СПбПУ.
+Мои заметки по курсу теории массового обслуживания [О. И. Зайца](https://www.researchgate.net/profile/Oleg-Zayats) в СПбПУ.
 
 ![ргр](https://user-images.githubusercontent.com/47058532/117203589-deb71580-adf7-11eb-92ea-6f78daf83e3d.png)
 
